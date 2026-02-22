@@ -34,15 +34,15 @@
             <div class="grid grid-cols-3 gap-4">
                 <div class="bg-white shadow-xl rounded-md p-5 ">
                     <p class="text-[14px] font-medium text-[#323B49]">Total</p>
-                    <p class="text-[20px] font-extrabold">0</p>
+                    <p id="total" class="text-[20px] font-extrabold">0</p>
                 </div>
                 <div class="bg-white shadow-xl rounded-md p-5 ">
                     <p class="text-[14px] font-medium text-[#323B49]">Interview</p>
-                    <p class="text-[20px] font-extrabold text-green-600">0</p>
+                    <p id="interview" class="text-[20px] font-extrabold text-green-600">0</p>
                 </div>
                 <div class="bg-white shadow-xl rounded-md p-5 ">
                     <p class="text-[14px] font-medium text-[#323B49]">Rejected</p>
-                    <p class="text-[20px] font-extrabold text-red-600">0</p>
+                    <p id="rejected" class="text-[20px] font-extrabold text-red-600">0</p>
                 </div>
             </div>
 
@@ -52,7 +52,7 @@
     </header>
 
     <!-- Main Section -->
-     <section class="w-11/12 mx-auto">
+     <section  class="w-11/12 mx-auto " >
         <div class="">
 
             <!-- Top Section -->
@@ -63,14 +63,16 @@
 
              <!-- Button Section -->
              <div class="flex gap-5 mt-6">
-                <button class="bg-blue-500 text-white px-9 py-2 text-[12px] rounded-md">All</button>
-                <button class="bg-white text-[#64748B] px-9 py-2 text-[12px] rounded-md">Interview</button>
-                <button class="bg-white text-[#64748B] px-9 py-2 text-[12px] rounded-md">Rejected</button>
+                <button onclick="trogolStyle('all-fillaring-btn')" id="all-fillaring-btn" class="bg-blue-500 text-white px-9 py-2 text-[12px] rounded-md">All</button>
+                <button onclick="trogolStyle('interview-fillaring-btn')" id="interview-fillaring-btn" class="bg-white text-[#64748B] px-9 py-2 text-[12px] rounded-md">Interview</button>
+                <button onclick="trogolStyle('rejected-filtaring-btn')" id="rejected-filtaring-btn" class="bg-white text-[#64748B] px-9 py-2 text-[12px] rounded-md">Rejected</button>
              </div>
 
              <!-- Card Section -->
 
-             <!-- Card 1 -->
+            <div id="allCards">
+
+                 <!-- Card 1 -->
               <div class="bg-white shadow rounded-md mt-4 p-6">
                 <div class="">
                     <div class="flex justify-between items-center rounded-md">
@@ -217,7 +219,9 @@
                     </div>
                 </div>
               </div>
+
              <!-- Card 8 -->
+            
               <div class="bg-white shadow rounded-md mt-4 p-6">
                 <div class="">
                     <div class="flex justify-between items-center rounded-md">
@@ -241,6 +245,8 @@
 
         </div>
      </section>
+
+     <script src="traker.js"></script>
     
 </body>
 </html>
