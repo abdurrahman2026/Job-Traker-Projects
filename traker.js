@@ -15,7 +15,7 @@ let filterdSection = document.getElementById("filterd-section");
 
 
 // Funcktion 
-function calculate() {
+  function calculate() {
 
     totalH.innerText = cardSection.children.length;
 
@@ -46,6 +46,8 @@ function trogolStyle(id) {
         filterdSection.innerHTML = "";
         cardSection.style.display = "block";
     }
+
+
     else if(id === "interview-fillaring-btn"){
         cardSection.style.display = "none";
         renderInterview();
@@ -64,13 +66,14 @@ cardSection.addEventListener("click", function(event){
     if(!parentCard)
         
         return;
+        
 
     let mobile = parentCard.querySelector(".mobile")?.innerText;
     let react = parentCard.querySelector(".react")?.innerText;
     let description = parentCard.querySelector(".discription")?.innerText;
     let appliedBtn = parentCard.querySelector(".applied");
 
-    let cardInfo = {
+    let cardInfo ={
         mobile,
         react,
         description
@@ -115,7 +118,7 @@ cardSection.addEventListener("click", function(event){
         calculate();
     }
 
-});
+  });
 
 
 
@@ -175,7 +178,7 @@ filterdSection.addEventListener("click", function(event){
     }
 
 
-    
+
     if(event.target.classList.contains("rejected-btn")){
 
         interviewList = interviewList.filter(item => item.mobile !== mobile);
