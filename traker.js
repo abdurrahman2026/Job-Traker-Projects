@@ -1,196 +1,120 @@
-let interviewList = [];
-let rejectedList = [];
+let crountTab = 'all';
 
-let totalH = document.getElementById("total");
-let interviewH = document.getElementById("interview");
-let rejectedH = document.getElementById("rejected");
+const tabActiv = ["bg-blue-500", "text-white"];
+const tabInactiv = ["bg-white", "text-[#64748B]"];
 
-let allBtn = document.getElementById("all-fillaring-btn");
-let interviewBtn = document.getElementById("interview-fillaring-btn");
-let rejectedBtn = document.getElementById("rejected-filtaring-btn");
 
-let cardSection = document.getElementById("allCards");
-let filterdSection = document.getElementById("filterd-section");
+const allContainer = document.getElementById("all-container")
+const interviewContainer = document.getElementById("interview-container")
+const rejectContainer = document.getElementById("reject-container")
+const emptyState = document.getElementById("empty-state");
 
 
 
-// Funcktion 
-  function calculate() {
-
-    totalH.innerText = cardSection.children.length;
-
-    interviewH.innerText = interviewList.length;
-    rejectedH.innerText = rejectedList.length;
-}
-calculate();
+function switchTab(tab){
+    console.log(tab);
+    const tabs = ["all", "interview", "rejected"];
+    crountTab = tab;
 
 
-
-// Button Section 
-function trogolStyle(id) {
-
-    let buttons = [allBtn, interviewBtn, rejectedBtn];
-
-    buttons.forEach(btn => {
-        btn.classList.remove("bg-blue-500", "text-white");
-        btn.classList.add("bg-white", "text-[#64748B]");
-    });
-
-    let selected = document.getElementById(id);
-    selected.classList.remove("bg-white", "text-[#64748B]");
-    selected.classList.add("bg-blue-500", "text-white");
-
-
-
-    if(id === "all-fillaring-btn"){
-        filterdSection.innerHTML = "";
-        cardSection.style.display = "block";
-    }
-
-
-    else if(id === "interview-fillaring-btn"){
-        cardSection.style.display = "none";
-        renderInterview();
-
-    }else if(id === "rejected-filtaring-btn"){
-        cardSection.style.display = "none";
-        renderRejected();
-    }
-}
-
-
-
-cardSection.addEventListener("click", function(event){
-
-    let parentCard = event.target.closest(".bg-white");
-    if(!parentCard)
+    for (const t of tabs) {
+        const tabName = document.getElementById("tab-" + t)
         
-        return;
-        
-
-    let mobile = parentCard.querySelector(".mobile")?.innerText;
-    let react = parentCard.querySelector(".react")?.innerText;
-    let description = parentCard.querySelector(".discription")?.innerText;
-    let appliedBtn = parentCard.querySelector(".applied");
-
-    let cardInfo ={
-        mobile,
-        react,
-        description
-    };
-
-
-    // Interview SEction
-    if(event.target.innerText === "INTERVIEW"){
-
-        
-        rejectedList = rejectedList.filter(item => item.mobile !== mobile);
-        let exist = interviewList.find(item => item.mobile === mobile);
-
-        if(!exist){
-            interviewList.push(cardInfo);
+        if(t === tab){
+            tabName.classList.remove(...tabInactiv);
+            tabName.classList.add(...tabActiv)
         }
-
-        appliedBtn.innerText = "INTERVIEW";
-        appliedBtn.classList.remove("bg-red-100","text-red-600");
-        appliedBtn.classList.add("bg-green-100","text-green-600");
-
-        calculate();
-    }
-
-
-    // Rejected ---->>
-    if(event.target.innerText === "REJECTED"){
-        interviewList = interviewList.filter(item => item.mobile !== mobile);
-
-        let exist = rejectedList.find(item => item.mobile === mobile);
-
-
-
-        if(!exist){
-            rejectedList.push(cardInfo);
+        else{
+            tabName.classList.add(...tabInactiv);
+            tabName.classList.remove(...tabActiv)
         }
-
-        appliedBtn.innerText = "REJECTED";
-        appliedBtn.classList.remove("bg-green-100","text-green-600");
-        appliedBtn.classList.add("bg-red-100","text-red-600");
-
-        calculate();
     }
 
-  });
+    const pages = [allContainer, interviewContainer, rejectContainer];
 
+    for(const section of pages){
+        section.classList.add("hidden")
+    }
 
+    emptyState.classList.add("hidden")
 
-// Render Section--
-function renderInterview(){
-
-    filterdSection.innerHTML = "";
-
-    interviewList.forEach(item => {
-
-        let div = document.createElement("div");
-        div.className = "bg-white shadow rounded-md mt-4 p-6";
-
-        div.innerHTML = `
-            <div>
-                <h3 class="mobile text-[18px] font-semibold text-[#002C5C]">${item.mobile}</h3>
-                <p class="react text-[14px] text-[#64748B]">${item.react}</p>
-                <p class="discription text-[14px] mt-3">${item.description}</p>
-
-                <div class="flex gap-2 mt-4">
-                    <button class="interview-btn border border-green-500 text-green-600 px-3 py-1 rounded">INTERVIEW</button>
-                    <button class="rejected-btn border border-red-500 text-red-600 px-3 py-1 rounded">REJECTED</button>
-                </div>
-            </div>
-        `;
-
-        filterdSection.appendChild(div);
-    });
+    if (tab === "all"){
+        allContainer.classList.remove("hidden");
+        if(allContainer.children.length < 1){
+            emptyState.classList.remove("hidden")
+        }
+    }
+    else if (tab === "interview"){
+        interviewContainer.classList.remove("hidden");
+        if(interviewContainer.children.length < 1){
+            emptyState.classList.remove("hidden")
+        }
+    }
+    else{
+        rejectContainer.classList.remove("hidden");
+        if(rejectContainer.children.length < 1){
+            emptyState.classList.remove("hidden")
+        }
+    }
+    updateStat();
 }
 
+// .........
+const totalStat = document.getElementById("stat-total");
+const statInterview = document.getElementById("stat-interview");
+const statRejected = document.getElementById("stat-rejected");
+const statAvailable = document.getElementById("available");
+
+totalStat.innerText = allContainer.children.length
+
+switchTab(crountTab);
 
 
-// Render Section - 2
-filterdSection.addEventListener("click", function(event){
+document.getElementById("job-container").addEventListener("click", function(event){
+    const clickEliment = event.target;
+    const card = clickEliment.closest(".card");
+    const parant = card.parentNode;
+    const status = card.querySelector(".status");
 
-    let parentCard = event.target.closest(".bg-white");
-    if(!parentCard) return;
+    if(clickEliment.classList.contains("interview")){
+        status.innerText = "Interviewed"
+        interviewContainer.appendChild(card)
+        updateStat()
+    }
+    if(clickEliment.classList.contains("rejected")){
+        status.innerText = "Rejected"
+        rejectContainer.appendChild(card)
+        updateStat()
+    }
+    if(clickEliment.classList.contains("delete")){
+        parant.removeChild(card)
+        updateStat()
+    }
+})
 
-    let mobile = parentCard.querySelector(".mobile").innerText;
-    let react = parentCard.querySelector(".react").innerText;
-    let description = parentCard.querySelector(".discription").innerText;
 
-    let cardInfo = { mobile, react, description };
+function updateStat (){
+    // totalStat.innerText = allContainer.children.length;
+    // statInterview.innerText = interviewContainer.children.length;
+    // statRejected.innerText = rejectContainer.children.length;
 
-
-
-    if(event.target.classList.contains("interview-btn")){
-
-        rejectedList = rejectedList.filter(item => item.mobile !== mobile);
-
-        if(!interviewList.find(item => item.mobile === mobile)){
-            interviewList.push(cardInfo);
-        }
-
-        calculate();
-        renderInterview();
+    const counts = {
+        all : allContainer.children.length,
+        interview: interviewContainer.children.length,
+        rejected: rejectContainer.children.length,
     }
 
+    totalStat.innerText = counts["all"];
+    statInterview.innerText = counts["interview"];
+    statRejected.innerText = counts["rejected"];
 
+    statAvailable.innerText = counts[crountTab]
 
-    if(event.target.classList.contains("rejected-btn")){
-
-        interviewList = interviewList.filter(item => item.mobile !== mobile);
-
-        if(!rejectedList.find(item => item.mobile === mobile)){
-            rejectedList.push(cardInfo);
-        }
-
-        calculate();
-        renderRejected();
+    if(counts[crountTab] < 1){
+        emptyState.classList.remove("hidden")
+    }else{
+        emptyState.classList.add("hidden")
     }
+}
 
-});
-
-
+updateStat();
